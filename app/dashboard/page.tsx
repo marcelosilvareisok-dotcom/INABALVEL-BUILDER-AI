@@ -22,10 +22,19 @@ export default function Dashboard() {
       
       const response = await ai.models.generateContent({
         model: 'gemini-3.1-pro-preview',
-        contents: `Crie um site de página única (Landing Page) para o seguinte pedido: "${prompt}". 
-        Retorne APENAS o código HTML completo. Use Tailwind CSS via CDN (<script src="https://cdn.tailwindcss.com"></script>) no <head>. 
-        O design deve ser moderno, responsivo, bonito e persuasivo. Inclua seções como Hero, Sobre, Benefícios e Rodapé.
-        Não inclua marcações markdown como \`\`\`html, apenas o código puro.`,
+        contents: `Crie um site de página única (Landing Page ou App UI) para o seguinte pedido: "${prompt}".\n\nRetorne APENAS o código HTML completo e válido.`,
+        config: {
+          systemInstruction: `Você é um Engenheiro Frontend e UI/UX Designer expert nível sênior. 
+Sua missão é gerar código HTML de página única usando Tailwind CSS (via CDN: <script src="https://cdn.tailwindcss.com"></script>).
+- O design DEVE ser extremamente moderno, estilo SaaS (inspirado em Stripe, Vercel, Linear, Lovable).
+- Use cores sofisticadas (ex: dark mode com toques de neon, gradientes suaves, glassmorphism).
+- Importe uma fonte moderna do Google Fonts (ex: Inter, Space Grotesk ou Outfit) e aplique no body.
+- Use ícones via CDN (ex: FontAwesome ou Phosphor Icons) se necessário.
+- O layout deve ser 100% responsivo (mobile-first).
+- Inclua interações visuais usando classes do Tailwind (hover, focus, transitions, animate-pulse, etc).
+- RETORNE APENAS O CÓDIGO HTML PURO. Não inclua marcações markdown como \`\`\`html ou explicações. O código deve começar com <!DOCTYPE html> e terminar com </html>.`,
+          temperature: 0.7,
+        }
       });
 
       let code = response.text || '';
