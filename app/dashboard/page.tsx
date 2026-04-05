@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import Link from 'next/link';
-import { LayoutDashboard, FolderKanban, Settings, LogOut, Sparkles, Code, MonitorPlay, Globe, Plus } from 'lucide-react';
+import { LayoutDashboard, FolderKanban, Settings, LogOut, Sparkles, Code, MonitorPlay, Globe, Plus, Star, Smartphone } from 'lucide-react';
 
 export default function Dashboard() {
   const [prompt, setPrompt] = useState('');
@@ -49,11 +49,11 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-black text-white flex">
       {/* Sidebar */}
-      <aside className="w-64 border-r border-gray-800 p-6 hidden md:flex flex-col">
+      <aside className="w-64 border-r border-gray-800 p-6 hidden md:flex flex-col h-screen overflow-y-auto">
         <div className="text-xl font-bold text-purple-500 mb-10 flex items-center gap-2">
           <Sparkles className="w-6 h-6" /> INABALÁVEL 💔
         </div>
-        <nav className="space-y-2 flex-1">
+        <nav className="space-y-2">
           <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 bg-purple-600/10 text-purple-400 rounded-lg font-semibold">
             <LayoutDashboard className="w-5 h-5" /> Dashboard
           </Link>
@@ -64,7 +64,34 @@ export default function Dashboard() {
             <Settings className="w-5 h-5" /> Configurações
           </Link>
         </nav>
-        <Link href="/" className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-red-400 hover:bg-gray-900 rounded-lg transition mt-auto">
+
+        <div className="mt-8 mb-6">
+          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 px-4">Projetos Recentes</h3>
+          <div className="space-y-1">
+            <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-900 rounded-lg transition text-left">
+              <Globe className="w-4 h-4 text-blue-400" /> Barbearia Zé
+            </button>
+            <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-900 rounded-lg transition text-left">
+              <MonitorPlay className="w-4 h-4 text-purple-400" /> Landing Page Dentista
+            </button>
+            <button className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-400 hover:text-white hover:bg-gray-900 rounded-lg transition text-left">
+              <Smartphone className="w-4 h-4 text-green-400" /> App Finanças Pessoais
+            </button>
+          </div>
+        </div>
+
+        <div className="mt-auto mb-4 p-4 bg-gradient-to-br from-purple-900/40 to-black border border-purple-500/30 rounded-xl">
+          <div className="flex items-center gap-2 mb-2">
+            <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+            <span className="font-bold text-sm text-white">Plano PRO</span>
+          </div>
+          <p className="text-xs text-gray-400 mb-3">Gere projetos ilimitados e exporte o código.</p>
+          <button className="w-full py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-lg transition shadow-lg shadow-purple-500/20">
+            Fazer Upgrade
+          </button>
+        </div>
+
+        <Link href="/" className="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-red-400 hover:bg-gray-900 rounded-lg transition">
           <LogOut className="w-5 h-5" /> Sair
         </Link>
       </aside>
