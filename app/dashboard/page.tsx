@@ -10,15 +10,23 @@ export default function Dashboard() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedCode, setGeneratedCode] = useState('');
   const [activeTab, setActiveTab] = useState<'preview' | 'code'>('preview');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
     setIsGenerating(true);
     setGeneratedCode('');
+    setErrorMsg('');
 
     try {
+      const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+      
+      if (!apiKey) {
+        throw new Error('Chave da API não encontrada. Se você publicou na Vercel, adicione a variável NEXT_PUBLIC_GEMINI_API_KEY nas configurações do projeto.');
+      }
+
       // Inicializa o cliente do Gemini usando a chave de API pública
-      const ai = new GoogleGenAI({ apiKey: process.env.NEXT_PUBLIC_GEMINI_API_KEY });
+      const ai = new GoogleGenAI({ apiKey });
       
       const response = await ai.models.generateContent({
         model: 'gemini-3.1-pro-preview',
@@ -47,9 +55,9 @@ Sua missão é gerar código HTML de página única usando Tailwind CSS (via CDN
       }
 
       setGeneratedCode(code.trim());
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao gerar:', error);
-      alert('Erro ao gerar o projeto. Verifique o console.');
+      setErrorMsg(error.message || 'Ocorreu um erro desconhecido ao gerar o projeto.');
     } finally {
       setIsGenerating(false);
     }
@@ -128,10 +136,15 @@ Sua missão é gerar código HTML de página única usando Tailwind CSS (via CDN
               <h2 className="text-4xl font-bold mb-4 text-center">O que vamos construir hoje?</h2>
               <p className="text-gray-400 mb-8 text-center text-lg">
                 Descreva sua ideia e a IA fará o resto. <br/>
-                <span className="text-gray-500 text-sm">Ex: "Quero um site para barbearia com agendamento online e tema escuro"</span>
+                <span className="text-gray-500 text-sm">Ex: &quot;Quero um site para barbearia com agendamento online e tema escuro&quot;</span>
               </p>
               
               <div className="w-full relative group">
+                {errorMsg && (
+                  <div className="mb-4 p-4 bg-red-500/10 border border-red-500/50 rounded-lg text-red-400 text-sm">
+                    <strong>Erro:</strong> {errorMsg}
+                  </div>
+                )}
                 <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
                 <div className="relative w-full">
                   <textarea
